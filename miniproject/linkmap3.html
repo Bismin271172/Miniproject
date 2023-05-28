@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza company</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <style>
+        #mapid {
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="w3-row">
+        <div id="mapid" class="w3-half"></div>
+        <div id="content" class="w3-half">
+            <table class="w3-table w3-striped">
+                <tr>
+                    <th>ชื่อร้าน</th>
+                    <th>สาขา</th>
+                    <th>เขต</th>
+                    <th>ถนน</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script>
+        var map = L.map("mapid").setView([13.746491190803239, 100.53471874476004], 14);
+    
+        var osm = L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        ).addTo(map);
+        var gsat = L.tileLayer(
+            "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+        ).addTo(map);
+    
+        var baseMaps = {
+            "OSM": osm,
+            "GoogleSat": gsat
+        };
+    
+       var tour = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เดอะพิซซ่าคอมปะนีเอ็มบีเค",
+        "สาขา": "บาบุญคลอง",
+        "เขต": "ปทุมวัน",
+        "ถนน": "พระราม1"
+      },
+      "geometry": {
+        "coordinates": [
+          100.53014533074224,
+          13.745710448390199
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เดอะพิซซ่าคอมปะนีพระราม1",
+        "สาขา": "โลตัสพระราม1",
+        "เขต": "ปทุมวัน",
+        "ถนน": "พระราม1"
+      },
+      "geometry": {
+        "coordinates": [
+          100.52480808640661,
+          13.74754320480612
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "สาขา": "สามย่านมิตรทาว",
+        "ชื่อร้าน": "เดอะพิซซ่าคอมปะนีสามย่าน",
+        "เขต": "ปทุมวัน",
+        "ถนน": "บรรทัดทอง"
+      },
+      "geometry": {
+        "coordinates": [
+          100.52850887978082,
+          13.734198674746082
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
+
+        var tourLayer = L.geoJSON(tour, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng).bindPopup(feature.properties.ชื่อร้าน);
+            },
+            onEachFeature: function (feature, layer) {
+                layer.on("mouseover", function () {
+                    document.getElementById(feature.properties.ชื่อร้าน).classList.add("w3-red");
+                });
+
+                layer.on("mouseout", function () {
+                    document.getElementById(feature.properties.ชื่อร้าน).classList.remove("w3-red");
+                });
+            }
+        }).addTo(map);
+
+        var cont = "";
+        cont += "<table class='w3-table w3-striped'>";
+        cont += "<tr>";
+        cont += "<th>ชื่อร้าน</th>";
+        cont += "<th>สาขา</th>";
+        cont += "<th>เขต</th>";
+        cont += "<th>ถนน</th>";
+        cont += "</tr>";
+        for (let i in tour.features) {
+            cont += "<tr id='" + tour.features[i].properties.ชื่อร้าน + "'>";
+            cont += "<td>" + tour.features[i].properties.ชื่อร้าน + "</td>";
+            cont += "<td>" + tour.features[i].properties.สาขา + "</td>";
+            cont += "<td>" + tour.features[i].properties.เขต + "</td>";
+            cont += "<td>" + tour.features[i].properties.ถนน + "</td>";
+            cont += "</tr>";
+        }
+        cont += "</table>";
+        document.getElementById("content").innerHTML = cont;
+
+        var overlays = {
+            "ชื่อร้าน": tourLayer
+        };
+        L.control.layers(baseMaps, overlays).addTo(map);
+    </script>
+    <center><table>
+      <tr>
+          <td>Home</td>
+          <td>KFC</td>
+          <td>Mcdonald's</td>
+      </tr>
+
+      <tr>
+          <td><a href="index.html">Click</a></td>
+          <td><a href="linkmap2.html">Click</a></td>
+          <td><a href="linkmap1.html">Click</a></td>
+      </tr>
+  </table></center>
+</body>
+</html>

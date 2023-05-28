@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFC</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <style>
+        #mapid {
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="w3-row">
+        <div id="mapid" class="w3-half"></div>
+        <div id="content" class="w3-half">
+            <table class="w3-table w3-striped">
+                <tr>
+                    <th>ชื่อร้าน</th>
+                    <th>สาขา</th>
+                    <th>เขต</th>
+                    <th>ถนน</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script>
+        var map = L.map("mapid").setView([13.740645831450761, 100.53067379475337], 15);
+    
+        var osm = L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        ).addTo(map);
+        var gsat = L.tileLayer(
+            "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+        ).addTo(map);
+    
+        var baseMaps = {
+            "OSM": osm,
+            "GoogleSat": gsat
+        };
+    
+        var tour = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เคเอฟซี",
+        "สาขา": "สยามพารากอน",
+        "เขต": "ปทุมวัน",
+        "ถนน": "พระราม1"
+      },
+      "geometry": {
+        "coordinates": [
+          100.53505242452928,
+          13.74582665580894
+        ],
+        "type": "Point"
+      },
+      "id": 0
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เคเอฟซี2",
+        "สาขา": "สยามเซ็นเตอร์",
+        "เขต": "ปทุมวัน",
+        "ถนน": "พระราม1"
+      },
+      "geometry": {
+        "coordinates": [
+          100.5324774290155,
+          13.746249200533356
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เคเอฟซี3",
+        "สาขา": "เซ็นทรัลเวิลด์",
+        "เขต": "ปทุมวัน",
+        "ถนน": "พระราม1"
+      },
+      "geometry": {
+        "coordinates": [
+          100.53966224667602,
+          13.746193207227094
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เคเอฟซี4",
+        "สาขา": "มาบุญคลอง",
+        "เขต": "ปทุมวัน",
+        "ถนน": "พญาไท"
+      },
+      "geometry": {
+        "coordinates": [
+          100.52974262171261,
+          13.744920744167814
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เคเอฟซี5",
+        "สาขา": "โลตัสพระราม1",
+        "เขต": "ปทุมวัน",
+        "ถนน": "บรรทัดทอง"
+      },
+      "geometry": {
+        "coordinates": [
+          100.52448009300667,
+          13.747650369155423
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เคเอฟซี6",
+        "สาขา": "สามย่านมิตรทาว",
+        "เขต": "ปทุมวัน",
+        "ถนน": "พระราม4"
+      },
+      "geometry": {
+        "coordinates": [
+          100.5285063549951,
+          13.733847626170515
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "ชื่อร้าน": "เคเอฟซี7",
+        "สาขา": "จามจุรีสแควร์",
+        "เขต": "ปทุมวัน",
+        "ถนน": "พระราม4"
+      },
+      "geometry": {
+        "coordinates": [
+          100.5300798020744,
+          13.73308661506536
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
+
+        var tourLayer = L.geoJSON(tour, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng).bindPopup(feature.properties.ชื่อร้าน);
+            },
+            onEachFeature: function (feature, layer) {
+                layer.on("mouseover", function () {
+                    document.getElementById(feature.properties.ชื่อร้าน).classList.add("w3-red");
+                });
+
+                layer.on("mouseout", function () {
+                    document.getElementById(feature.properties.ชื่อร้าน).classList.remove("w3-red");
+                });
+            }
+        }).addTo(map);
+
+        var cont = "";
+        cont += "<table class='w3-table w3-striped'>";
+        cont += "<tr>";
+        cont += "<th>ชื่อร้าน</th>";
+        cont += "<th>สาขา</th>";
+        cont += "<th>เขต</th>";
+        cont += "<th>ถนน</th>";
+        cont += "</tr>";
+        for (let i in tour.features) {
+            cont += "<tr id='" + tour.features[i].properties.ชื่อร้าน + "'>";
+            cont += "<td>" + tour.features[i].properties.ชื่อร้าน + "</td>";
+            cont += "<td>" + tour.features[i].properties.สาขา + "</td>";
+            cont += "<td>" + tour.features[i].properties.เขต + "</td>";
+            cont += "<td>" + tour.features[i].properties.ถนน + "</td>";
+            cont += "</tr>";
+        }
+        cont += "</table>";
+        document.getElementById("content").innerHTML = cont;
+
+        var overlays = {
+            "ชื่อร้าน": tourLayer
+        };
+        L.control.layers(baseMaps, overlays).addTo(map);
+    </script>
+
+<center><table>
+  <tr>
+      <td>Home</td>
+      <td>Mcdonald's</td>
+      <td>Pizza company</td>
+  </tr>
+
+  <tr>
+      <td><a href="index.html">Click</a></td>
+      <td><a href="linkmap1.html">Click</a></td>
+      <td><a href="linkmap3.html">Click</a></td>
+  </tr>
+</table></center>
+
+</body>
+</html>

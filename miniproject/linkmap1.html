@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mcdonald's</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <style>
+        #mapid {
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="w3-row">
+        <div id="mapid" class="w3-half"></div>
+        <div id="content" class="w3-half">
+            <table class="w3-table w3-striped">
+                <tr>
+                    <th>ชื่อร้าน</th>
+                    <th>สาขา</th>
+                    <th>เขต</th>
+                    <th>ถนน</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script>
+        var map = L.map("mapid").setView([13.746095580564726, 100.53703908125958], 15);
+    
+        var osm = L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        ).addTo(map);
+        var gsat = L.tileLayer(
+            "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+        ).addTo(map);
+    
+        var baseMaps = {
+            "OSM": osm,
+            "GoogleSat": gsat
+        };
+    
+        var tour = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "ชื่อร้าน": "แมคโดนัลสยาม",
+                        "สาขา": "สยามพารากอน",
+                        "เขต": "ปทุมวัน",
+                        "ถนน": "พระราม1"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            100.5353887365012,
+                            13.745788360323843
+                        ]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "ชื่อร้าน": "แมคโดนัลสแวร์วัน",
+                        "สาขา": "สยามสแควร์วัน",
+                        "เขต": "ปทุมวัน",
+                        "ถนน": "พระราม1"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            100.53442344513309,
+                            13.746031372572531
+                        ]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "ชื่อร้าน": "แมคโดนัลเซ็นทรัล",
+                        "สาขา": "เซ็นทรัลเวิลด์",
+                        "เขต": "ปทุมวัน",
+                        "ถนน": "พระราม1"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            100.53956282468613,
+                            13.745968787881012
+                        ]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "ชื่อร้าน": "แมคโดนัลบิ๊กซี",
+                        "สาขา": "บิ๊กซีราชดำริ",
+                        "เขต": "ปทุมวัน",
+                        "ถนน": "ราชดำริ"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            100.54099846445013,
+                            13.747354831541585
+                        ]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "ชื่อร้าน": "แมคโดนัลเอ็มบีเค",
+                        "สาขา": "มาบุญคลอง",
+                        "เขต": "ปทุมวัน",
+                        "ถนน": "พญาไท"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            100.53007202023821,
+                            13.745921508106562
+                        ]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "ชื่อร้าน": "แมคโดนัลเอ็กซ์เพรส",
+                        "สาขา": "ฮอลิเดย์อินน์เอ็กซ์เพรส สยาม",
+                        "เขต": "ปทุมวัน",
+                        "ถนน": "พระราม1"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            100.52768330116533,
+                            13.747059765322348
+                        ]
+                    }
+                }
+            ]
+        };
+
+        var tourLayer = L.geoJSON(tour, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng).bindPopup(feature.properties.ชื่อร้าน);
+            },
+            onEachFeature: function (feature, layer) {
+                layer.on("mouseover", function () {
+                    document.getElementById(feature.properties.ชื่อร้าน).classList.add("w3-red");
+                });
+
+                layer.on("mouseout", function () {
+                    document.getElementById(feature.properties.ชื่อร้าน).classList.remove("w3-red");
+                });
+            }
+        }).addTo(map);
+
+        var cont = "";
+        cont += "<table class='w3-table w3-striped'>";
+        cont += "<tr>";
+        cont += "<th>ชื่อร้าน</th>";
+        cont += "<th>สาขา</th>";
+        cont += "<th>เขต</th>";
+        cont += "<th>ถนน</th>";
+        cont += "</tr>";
+        for (let i in tour.features) {
+            cont += "<tr id='" + tour.features[i].properties.ชื่อร้าน + "'>";
+            cont += "<td>" + tour.features[i].properties.ชื่อร้าน + "</td>";
+            cont += "<td>" + tour.features[i].properties.สาขา + "</td>";
+            cont += "<td>" + tour.features[i].properties.เขต + "</td>";
+            cont += "<td>" + tour.features[i].properties.ถนน + "</td>";
+            cont += "</tr>";
+        }
+        cont += "</table>";
+        document.getElementById("content").innerHTML = cont;
+
+        var overlays = {
+            "ชื่อร้าน": tourLayer
+        };
+        L.control.layers(baseMaps, overlays).addTo(map);
+    </script>
+    <hr>
+    <center><table>
+        <tr>
+            <td>Home</td>
+            <td>KFC</td>
+            <td>Pizza company</td>
+        </tr>
+
+        <tr>
+            <td><a href="index.html">Click</a></td>
+            <td><a href="linkmap2.html">Click</a></td>
+            <td><a href="linkmap3.html">Click</a></td>
+        </tr>
+    </table></center>
+</body>
+</html>
